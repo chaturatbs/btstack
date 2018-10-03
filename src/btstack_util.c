@@ -186,9 +186,17 @@ void printf_hexdump(const void *data, int size){
     if (size <= 0) return;
     int i;
     for (i=0; i<size;i++){
-        printf("%02X ", ((uint8_t *)data)[i]);
+        #ifdef SEGGER_RTT_LOG
+            SEGGER_RTT_printf(0,"%02X ", ((uint8_t *)data)[i]);
+        #else
+            printf("%02X ", ((uint8_t *)data)[i]);
+        #endif
     }
-    printf("\n");
+    #ifdef SEGGER_RTT_LOG
+        SEGGER_RTT_printf(0,"\n");
+    #else
+        printf("\n");
+    #endif
 }
 
 #if defined(ENABLE_LOG_INFO) || defined(ENABLE_LOG_DEBUG)

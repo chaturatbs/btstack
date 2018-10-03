@@ -136,27 +136,55 @@ void hci_dump_set_max_packets(int packets){
 static void printf_packet(uint8_t packet_type, uint8_t in, uint8_t * packet, uint16_t len){
     switch (packet_type){
         case HCI_COMMAND_DATA_PACKET:
-            printf("CMD => ");
+            #ifdef SEGGER_RTT_LOG
+                SEGGER_RTT_printf(0,"CMD => "); 
+            #else
+                printf("CMD => ");
+            #endif
             break;
         case HCI_EVENT_PACKET:
-            printf("EVT <= ");
+            #ifdef SEGGER_RTT_LOG
+                SEGGER_RTT_printf(0,"EVT <= "); 
+            #else
+                printf("EVT <= ");
+            #endif
             break;
         case HCI_ACL_DATA_PACKET:
             if (in) {
-                printf("ACL <= ");
+                 #ifdef SEGGER_RTT_LOG
+                    SEGGER_RTT_printf(0,"ACL <= "); 
+                #else
+                    printf("ACL <= ");
+                #endif
             } else {
-                printf("ACL => ");
+                 #ifdef SEGGER_RTT_LOG
+                    SEGGER_RTT_printf(0,"ACL => "); 
+                #else
+                    printf("ACL => ");
+                #endif
             }
             break;
         case HCI_SCO_DATA_PACKET:
             if (in) {
-                printf("SCO <= ");
+                #ifdef SEGGER_RTT_LOG
+                    SEGGER_RTT_printf(0,"SCO <= "); 
+                #else
+                    printf("SCO <= ");
+                #endif
             } else {
-                printf("SCO => ");
+                #ifdef SEGGER_RTT_LOG
+                    SEGGER_RTT_printf(0,"SCO => "); 
+                #else
+                    printf("SCO => ");
+                #endif
             }
             break;
         case LOG_MESSAGE_PACKET:
-            printf("LOG -- %s\n", (char*) packet);
+            #ifdef SEGGER_RTT_LOG
+                SEGGER_RTT_printf(0, "LOG -- %s\n", (char*) packet);
+            #else
+                printf("LOG -- %s\n", (char*) packet);
+            #endif
             return;
         default:
             return;
@@ -188,8 +216,13 @@ static void printf_timestamp(void){
 
     uint16_t p_ms      = time_ms - (seconds * 1000);
     uint16_t p_seconds = seconds - (minutes * 60);
-    uint16_t p_minutes = minutes - (hours   * 60);     
-    printf("[%02u:%02u:%02u.%03u] ", hours, p_minutes, p_seconds, p_ms);
+    uint16_t p_minutes = minutes - (hours   * 60);
+
+    #ifdef SEGGER_RTT_LOG
+        SEGGER_RTT_printf(0,"[%02u:%02u:%02u.%03u] ", hours, p_minutes, p_seconds, p_ms);
+    #else
+        printf("[%02u:%02u:%02u.%03u] ", hours, p_minutes, p_seconds, p_ms);
+    #endif
 #endif
 }
 

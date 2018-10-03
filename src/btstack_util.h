@@ -57,7 +57,8 @@ extern "C" {
 #include "bluetooth.h"
 #include "btstack_defines.h"
 #include "btstack_linked_list.h"
-	
+
+
 // hack: compilation with the android ndk causes an error as there's a reverse_64 macro
 #ifdef reverse_64
 #undef reverse_64
